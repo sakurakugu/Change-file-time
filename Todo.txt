@@ -1,0 +1,10 @@
+时间戳转换为时间功能
+将失败的输出到一个日志文件中的功能，并在结束后打开
+补全所有的时间格式
+解决powershell 7与5的冲突
+
+搞定这种复制多的情况的（后面有个_1）
+Screenshot_20230717_235553_1_com.huawei.health.jpg
+还有其他失败的情况
+Screenshot_20220802_184145_com.iflytek.elpmobile.student_edit_3420457512444.jpg
+wx_camera_1633087406274.jpg
