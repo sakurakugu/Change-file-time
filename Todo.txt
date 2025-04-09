@@ -8,3 +8,6 @@ Screenshot_20230717_235553_1_com.huawei.health.jpg
 还有其他失败的情况
 Screenshot_20220802_184145_com.iflytek.elpmobile.student_edit_3420457512444.jpg
 wx_camera_1633087406274.jpg
+
+异步获取错误 -- 之前在copilot中问了
+相同的就不修改了
