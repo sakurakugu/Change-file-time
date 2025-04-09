@@ -4,7 +4,7 @@ from pathlib import Path
 from PIL import Image
 from PIL.ExifTags import TAGS
 from tqdm import tqdm
-import 资源.ps_cli as ps_cli
+from 资源 import CLI页面
 
 def 从文件名中提取时间(文件):
     文件名 = Path(文件).stem # 去除后缀
@@ -25,7 +25,7 @@ def 从文件名中提取时间(文件):
     return None # 如果所有格式都不对，返回None
 
 def 从文件属性中提取时间(文件):
-    图片扩展名 = ['.jpg', '.jpeg', '.png', '.tiff', '.bmp'] # 跳过 .git 等文件
+    图片扩展名 = ['.jpg', '.jpeg', '.png', '.tiff', '.bmp'] # 暂时不包括 .git 等文件
     if not os.path.splitext(文件)[1].lower() in 图片扩展名:
         return None
     try:
@@ -43,7 +43,7 @@ def 从文件属性中提取时间(文件):
 当前目录 = os.path.dirname(os.path.abspath(__file__))
 os.chdir(当前目录)
 
-ps_cli.初始化_ps()
+CLI页面.初始化_CLI页面()
 
 def 修改文件时间(多份文件路径, 修改类型="3", 输入时间=""):
     for 文件 in 多份文件路径:
@@ -53,14 +53,14 @@ def 修改文件时间(多份文件路径, 修改类型="3", 输入时间=""):
             print(f"\033[31m{文件}中未找到时间！, 跳过\033[0m")
             continue
         命令 = f'xgsj "{文件}" "{修改时间}" "{修改类型}"\n'
-        ps_cli.运行命令(命令)
+        CLI页面.运行命令(命令)
         print(f"\033[32m{文件}修改为 {修改时间} \033[0m")
 
 
 
 # 在窗口关闭前先关闭 PowerShell 窗口
 def 清理资源():
-    ps_cli.清理资源()
+    CLI页面.清理资源()
 
 if __name__ == '__main__':
     pass
