@@ -8,6 +8,7 @@ from pathlib import Path
 from PIL import Image
 from PIL.ExifTags import TAGS
 from tqdm import tqdm
+import 资源.ps_cli as ps_cli
 
 def 从文件名中提取时间(文件):
     文件名 = Path(文件).stem # 去除后缀
@@ -47,35 +48,24 @@ def 从文件属性中提取时间(文件):
 当前目录 = os.path.dirname(os.path.abspath(__file__))
 os.chdir(当前目录)
 
-# 生成持久 PowerShell 实例
-ps_进程 = subprocess.Popen(
-    ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "-"],
-    stdin=subprocess.PIPE,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    text=True
-)
-# 加载修改时间脚本，并定义一个可复用的函数
-ps_进程.stdin.write('. "./资源/修改时间.ps1"\n')
-ps_进程.stdin.write('function 修改时间Persistent { param($文件, $修改时间, $修改类型) . "./资源/修改时间.ps1" $文件 $修改时间 $修改类型 }\n')
-ps_进程.stdin.flush()
+ps_cli.初始化_ps()
 
 def 修改文件时间(多份文件路径):
-    global ps_进程
+    global ps_cli
     修改类型 = 输入框1.get().strip() or "3"
     输入时间 = 输入框2.get().strip()  # 优化：提前读取输入时间
-    for 文件 in tqdm(多份文件路径, desc="修改文件进度"):
+    # for 文件 in tqdm(多份文件路径, desc="修改文件进度"):
+    for 文件 in 多份文件路径:
         文件 = os.path.abspath(文件)
         修改时间 = 输入时间 or 从文件名中提取时间(文件) or 从文件属性中提取时间(文件)
         if not 修改时间:
             标签.config(text="文件中未找到时间！", fg="red")
             print(f"\033[31m{文件}中未找到时间！, 跳过\033[0m")
             continue
-        # 调用持久 PowerShell 实例执行修改任务
-        命令 = f'修改时间Persistent "{文件}" "{修改时间}" "{修改类型}"\n'
-        ps_进程.stdin.write(命令)
-        ps_进程.stdin.flush()
-        print(f"\033[32m{文件}修改为{修改时间} \033[0m")
+        # 调用 ps_cli 模块执行修改任务
+        命令 = f'xgsj "{文件}" "{修改时间}" "{修改类型}"\n'
+        ps_cli.运行命令(命令)
+        print(f"\033[32m{文件}修改为 {修改时间} \033[0m")
 
 def 拖动部分(event):
     多份文件路径 = root.tk.splitlist(event.data)
@@ -93,10 +83,7 @@ def 打开文件对话框():
 
 # 在窗口关闭前先关闭 PowerShell 窗口
 def 清理资源():
-    global ps_进程
-    if ps_进程:
-        ps_进程.stdin.close()
-        ps_进程.kill()
+    ps_cli.清理资源()
         
 ### GUI部分 ###
 
