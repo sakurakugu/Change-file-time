@@ -42,6 +42,6 @@ function 修改时间{
             $File.LastWriteTime = $Time
             $File.LastAccessTime = $Time
         }
-        default { Write-Error "无效的 Type 参数: $Type"; exit 1 }
+        default { Write-Error "输入了无效的`“修改类型`”: $Type"; exit 1 }
     }
 }

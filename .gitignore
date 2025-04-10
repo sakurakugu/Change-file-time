@@ -1,2 +1,4 @@
-# 编译器相关
-待测试的数据
+待测试的数据/
+__pycache__/
+.idea/
+tempCodeRunnerFile.py
