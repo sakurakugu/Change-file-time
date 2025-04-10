@@ -1,14 +1,15 @@
 import os
 from tqdm import tqdm
 from 资源 import CLI页面
-from .提取时间 import 从文件名中提取时间, 从文件属性中提取时间
+from .提取时间 import 文件名称提取时间, 文件属性提取时间
 
 
 def 修改文件时间(多份文件路径, 修改类型="3", 输入时间=""):
     print(修改类型)
     for 文件 in 多份文件路径:
         文件 = os.path.abspath(文件)
-        修改时间 = 输入时间 or 从文件名中提取时间(文件) or 从文件属性中提取时间(文件)
+
+        修改时间 = 输入时间 or 文件名称提取时间.提取时间(文件) or 文件属性提取时间.提取时间(文件)
         if not 修改时间:
             print(f"\033[31m{文件}中未找到时间！, 跳过\033[0m")
             continue

@@ -11,3 +11,58 @@ wx_camera_1633087406274.jpg
 
 异步获取错误 -- 之前在copilot中问了
 相同的就不修改了
+
+改成用正则表达式来判断？
+
+==================================================================
+
+# 优先输入时间，再是拍摄时间，再是名称时间，最后是文件属性时间
+# 拍摄日期没有毫秒吗，没有的话就对比与属性、名称时间的差距，然后补充毫秒
+还有亚秒、与其他时间属性没包括
+https://www.lddgo.net/image/image-metadata
+
+ 1. EXIF（Exchangeable Image File Format）
+    主要用于 JPEG、TIFF 文件，广泛应用于数码照片。
+
+    常见的时间相关字段包括：
+
+    字段名	含义
+    DateTime	图像最后被修改的时间（通常是文件系统时间）
+    DateTimeOriginal	原始照片拍摄时间
+    DateTimeDigitized	数字化（扫描或导入）时间
+    SubSecTimeOriginal	拍摄时间的亚秒数
+    SubSecTimeDigitized	数字化时间的亚秒数
+    SubSecTime	修改时间的亚秒数
+
+2. GPS（EXIF 的一部分，用于记录定位信息）
+    GPS 部分也可以包含与时间有关的数据，尤其是来自 GPS 卫星的 UTC 时间。
+
+    字段名	含义
+    GPSDateStamp	GPS 数据的 UTC 日期，格式为 YYYY:MM:DD
+    GPSTimeStamp	GPS 时间（UTC） - 时:分:秒（精确到秒）
+    ⚠️ 注意：GPS 时间通常是 UTC，不包含时区信息。
+
+3. IPTC（International Press Telecommunications Council）
+    用于新闻摄影、媒体行业。
+
+    字段名	含义
+    DateCreated	内容创作的日期（YYYYMMDD）
+    TimeCreated	内容创作的时间（HHMMSS±时区）
+    DigitalCreationDate	数字内容创建日期
+    DigitalCreationTime	数字内容创建时间
+    ReleaseDate	发布日期
+    ReleaseTime	发布时间
+    ExpirationDate	过期日期
+    ExpirationTime	过期时间
+
+4. XMP（Extensible Metadata Platform）
+    Adobe 提出的基于 XML 的标准，可以嵌入多种文件格式中（包括 JPG、PDF、PSD 等）。
+
+    常见时间字段（可能在不同命名空间下）：
+
+    字段名	含义
+    xmp:CreateDate	创建时间（ISO 8601 格式）
+    xmp:ModifyDate	修改时间
+    xmp:MetadataDate	元数据的最后更新时间
+    photoshop:DateCreated	原始创建时间（常与 IPTC 一致）
+    dc:date	Dublin Core 日期，通常是创建时间
